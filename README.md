@@ -1,38 +1,23 @@
 <!-- ai-generated: 0% - written by the course team -->
-# svcdesk - ITSM 2026/27 course repository
+# Lab 2 - what is in this folder
 
-This repository was created from the course template. It holds your `svcdesk` service for the whole semester:
-built in Lab 1, extended in the later labs. Keep it public, and keep personal data out of it.
-
-## The one command
-
-    ./itsmlab.sh verify 1            # Linux, macOS
-    .\itsmlab.ps1 verify 1           # Windows PowerShell (once before: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned)
-
-It runs the published Tier A checker (a container) against this directory: builds and starts your service with
-`docker compose`, runs the published checks, prints a table, and exits 0 when every Core spec passes. Add
-`--json report.json` to keep the machine-readable report. Tier A runs are unlimited and never count as attempts.
-
-Before the first run: fill in `repository:` in `itsmlab.yaml`, copy `Dockerfile.example` to `Dockerfile` (or
-write your own), and read the course package (`README.md`, `PREWORK.md`, `lab1/`), published on Moodle.
-
-## Layout
-
-| path | what it is |
+| file | what it is |
 |---|---|
-| `docker-compose.yml` | the compose contract: service `svcdesk` on 8080, `SVCDESK_TEST_CLOCK`, a named volume; `tests` profile commented out |
-| `Dockerfile.example` | a Python 3.13 image skeleton; copy to `Dockerfile` or replace for your language |
-| `DECISIONS.md` | your reasoning artifact: front matter with the three decisions, three sections, five labels each |
-| `itsmlab.yaml` | lab number, baselines, your repository, the submissions repository, the checker image |
-| `itsmlab.sh`, `itsmlab.ps1` | wrappers that run the checker container |
-| `specs/` | your specifications, published and receipted before any code |
-| `src/` | your implementation |
-| `.github/workflows/tier-a.yml` | runs the checker on every push and publishes `report.json` as an artifact with a step summary |
-| `.gitignore` | keeps `report.json`, virtual environments and local data out of git |
-| `.gitattributes` | LF line endings on every system, so the checker's git sees a clean tree on Windows too; keep it |
+| [HANDOUT.md](HANDOUT.md) | start here: goal, minute budget, specs, deliverables, submission |
+| [METRIC-SPEC.md](METRIC-SPEC.md) | the whole rulebook: five metrics, six edge cases, the two endpoints, the gaming gates, the tolerances |
+| [CHECKS.md](CHECKS.md) | every published Tier A check, generated from the checker itself |
+| [EDGE-CASES-template.md](EDGE-CASES-template.md) | the shape of your reasoning artifact |
+| [gaming-template.json](gaming-template.json) | the shape of `gaming.json` |
+| [fixtures/events-practice.jsonl](fixtures/events-practice.jsonl) | the practice event log, 230 events |
+| [fixtures/metrics-practice.json](fixtures/metrics-practice.json) | its **published** expected values - the answer key for the practice set |
 
-## Every push runs the checker
+The practice fixture's expected values are published on purpose: it is the teaching set, and you should be able
+to see every failure before you submit. The **graded** fixture is generated from your own seed, is never
+published, and is scored against values the grader computes from `METRIC-SPEC.md` itself.
 
-The workflow `tier-a` runs on every push and on demand (Actions tab, "Run workflow"). It needs no secrets. The
-job is red when a Core spec fails; the step summary shows which checks, and `report.json` is attached as an
-artifact.
+**Copy `fixtures/` into your repository root** at the start of the lab: you need the log locally to compute
+`metrics.json` and to build `gaming/after.jsonl`. The checker carries its own copy of both files inside the
+image, so `./itsmlab.sh verify 2` (Windows: `.\itsmlab.ps1 verify 2`) works with no network - and editing your copy
+changes nothing it checks.
+
+Everything about the checker, receipts, attempts and deadlines is in the course [README](../README.md).
