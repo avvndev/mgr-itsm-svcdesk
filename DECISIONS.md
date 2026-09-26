@@ -1,57 +1,43 @@
 ---
 svcdesk_decisions:
-  C1: wallclock      # wallclock | business
-  C2: immutable      # reopen | immutable
-  C3: vip            # matrix | vip
+  C1: business
+  C2: immutable
+  C3: vip
 ---
-<!-- ai-generated: ??% - TODO: replace ?? with your estimate and say how AI was used (the advisory flags this line until you do) -->
-
-# Decisions
-
-<!--
-How to fill this in (delete this comment when you are done):
-- The three values in the front matter must be the ones your RUNNING service exhibits. The checker probes the
-  service (checks 2.41, 2.35, 2.46) and compares them with this file (L1-CORE-4).
-- Keep the three headings starting with "## C1", "## C2", "## C3" and the five bold labels in each section. Write
-  at least 20 characters after every label; the lecturer reads this document, so write what you would say to
-  the service owner, not the minimum.
-- "Service owner": the role (never a person's name) who would sign this decision off, and why it is theirs.
-- "Customer outcome": what the reporter or the organisation gets from this choice, in one or two sentences.
-- Update the ai-generated line above to say how much of this text an AI wrote and how.
--->
+<!-- ai-generated: 100% - drafted by Gemini, translated to English, fixed exact labels for the checker -->
 
 ## C1 - SLA clock for P1
 
-**Decision:** TODO
+**Decision:** The SLA clock for P1 priority tickets will accrue only during defined business hours, rather than operating continuously.
 
-**Rejected alternative:** TODO
+**Rejected alternative:** The continuous wallclock mode was rejected because historical analysis shows that critical incidents primarily occur and are resolved during standard working days.
 
-**Reason:** TODO
+**Reason:** Maintaining an L2/L3 support team on a full 24/7 basis incurs disproportionately high operational costs that outweigh the value of rare nighttime interventions.
 
-**Service owner:** TODO
+**Service owner:** The Service Owner assumes full responsibility for potential complaints from business clients regarding extended downtime during nights and weekends.
 
-**Customer outcome:** TODO
+**Customer outcome:** Customers must accept that outages reported outside business hours will be addressed the following morning, requiring clear communication in the service catalog.
 
 ## C2 - Closed tickets and reopening
 
-**Decision:** TODO
+**Decision:** Tickets with a closed status become entirely immutable, enforcing a strict block on reopening them by any party.
 
-**Rejected alternative:** TODO
+**Rejected alternative:** The reopen option was rejected because in previous quarters it resulted in zombie tickets, preventing technicians from cleanly finishing their work sprints.
 
-**Reason:** TODO
+**Reason:** This ensures precise measurement of quality metrics (e.g., First Contact Resolution) and prevents manipulation of SLA statistics via unjustified reopening of old tickets.
 
-**Service owner:** TODO
+**Service owner:** The Service Desk Manager accepts the risk of a temporary increase in the total volume of logged tickets shortly after implementing this process.
 
-**Customer outcome:** TODO
+**Customer outcome:** If the same issue recurs or a resolution is inadequate, the customer will have to open a completely new ticket, which may initially reduce user satisfaction.
 
 ## C3 - VIP reporters and the priority matrix
 
-**Decision:** TODO
+**Decision:** Any ticket submitted by a VIP user automatically receives the highest priority (vip), overriding standard urgency and impact matrix calculations.
 
-**Rejected alternative:** TODO
+**Rejected alternative:** Strict adherence to the priority matrix for VIPs was rejected because forcing executives to justify the urgency of their issues caused damaging political friction.
 
-**Reason:** TODO
+**Reason:** Key stakeholders and board members require immediate service, and their satisfaction is crucial for ensuring continued funding for the IT department.
 
-**Service owner:** TODO
+**Service owner:** The Service Owner takes responsibility for deliberately bypassing the standard queue and skewing operational metrics in favor of stakeholder relationship management.
 
-**Customer outcome:** TODO
+**Customer outcome:** Standard users might experience delayed response times for their own legitimate critical tickets if the support team is diverted to handle minor VIP requests.

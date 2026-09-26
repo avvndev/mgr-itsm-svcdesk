@@ -20,6 +20,12 @@ services:
     #   retries: 20
     #   start_period: 5s
 
+  tests:
+    profiles:
+      - tests
+    build: .
+    command: ["python", "tests/run_tests.py"]
+    
   # Stretch S3 (own tests): uncomment and adapt. The checker builds every image up front
   # (docker compose --profile tests build; a tests image that does not build costs S3, never Core), then runs
   #   docker compose --profile tests run --rm --build tests
