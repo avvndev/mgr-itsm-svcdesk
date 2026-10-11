@@ -1,0 +1,74 @@
+# ai-generated: 100% - Promtool test cases for svcdesk SLO alerts
+rule_files:
+  - alerts.yml
+
+evaluation_interval: 1m
+
+tests:
+  # Test 1: Sub-threshold for High (12% errors): threshold is 14.4%. Kills High threshold / 1.5
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_bucket{http_route="/kb/search", le="0.2"}'
+        values: '0+88x60'
+      - series: 'http_server_request_duration_seconds_count{http_route="/kb/search"}'
+        values: '0+100x60'
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: KBSearchLatencyBurnRateHigh
+        exp_alerts: []
+
+  # Test 2: Sub-threshold for Medium (5% errors): threshold is 6.0%. Kills Medium threshold / 1.5
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_bucket{http_route="/kb/search", le="0.2"}'
+        values: '0+95x60'
+      - series: 'http_server_request_duration_seconds_count{http_route="/kb/search"}'
+        values: '0+100x60'
+    alert_rule_test:
+      - eval_time: 40m
+        alertname: KBSearchLatencyBurnRateMedium
+        exp_alerts: []
+
+  # Test 3: High burn (18% errors, >14.4% and <21.6%): Kills High threshold x 1.5, for + 5m, for - 5m
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_bucket{http_route="/kb/search", le="0.2"}'
+        values: '0+82x60'
+      - series: 'http_server_request_duration_seconds_count{http_route="/kb/search"}'
+        values: '0+100x60'
+    alert_rule_test:
+      - eval_time: 2m
+        alertname: KBSearchLatencyBurnRateHigh
+        exp_alerts: []
+      - eval_time: 4m
+        alertname: KBSearchLatencyBurnRateHigh
+        exp_alerts:
+          - exp_labels:
+              alertname: KBSearchLatencyBurnRateHigh
+              service: svcdesk
+              slo: latency
+              severity: P1
+            exp_annotations:
+              summary: "P1: GET /kb/search 1h burn rate exceeds 14.4x"
+
+  # Test 4: Medium burn (7.5% errors, >6% and <9%): Kills Medium threshold x 1.5, for + 5m, for - 5m
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_bucket{http_route="/kb/search", le="0.2"}'
+        values: '0+925x60'
+      - series: 'http_server_request_duration_seconds_count{http_route="/kb/search"}'
+        values: '0+1000x60'
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: KBSearchLatencyBurnRateMedium
+        exp_alerts: []
+      - eval_time: 18m
+        alertname: KBSearchLatencyBurnRateMedium
+        exp_alerts:
+          - exp_labels:
+              alertname: KBSearchLatencyBurnRateMedium
+              service: svcdesk
+              slo: latency
+              severity: P2
+            exp_annotations:
+              summary: "P2: GET /kb/search 6h burn rate exceeds 6.0x"

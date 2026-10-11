@@ -117,3 +117,38 @@ def test_11_immutable_closed_ticket():
     
     res = client.post(f"/tickets/{t_id}/reopen")
     assert res.status_code == 409
+
+def test_12_kb_search_bad_queries():
+    # missing q
+    res1 = client.get("/kb/search")
+    assert res1.status_code in [400, 422]
+    assert "error" in res1.json()
+
+    # empty q
+    res2 = client.get("/kb/search?q=")
+    assert res2.status_code in [400, 422]
+    assert "error" in res2.json()
+
+    # 201 characters q
+    res3 = client.get(f"/kb/search?q={'a'*201}")
+    assert res3.status_code in [400, 422]
+    assert "error" in res3.json()
+
+def test_13_metrics_histogram_exposed():
+    # Trigger a request on /health and an unmatched route
+    client.get("/health")
+    client.get("/non-existent-route-for-probe-test")
+
+    res = client.get("/metrics")
+    assert res.status_code == 200
+    assert "text/plain" in res.headers["content-type"]
+    content = res.text
+    assert "# TYPE http_server_request_duration_seconds histogram" in content
+    assert 'http_route="/health"' in content
+    assert 'http_route="unmatched"' in content
+    assert 'le="+Inf"' in content
+    assert 'le="0.12"' in content
+    assert 'le="0.13"' in content
+    assert 'le="0.2"' in content
+    assert "http_server_request_duration_seconds_count" in content
+    assert "http_server_request_duration_seconds_sum" in content

@@ -1,0 +1,58 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "monitoring.coreos.com/v1",
+      "kind": "PrometheusRule",
+      "metadata": {
+        "name": "svcdesk-alerts",
+        "namespace": "monitoring",
+        "labels": {
+          "app": "svcdesk",
+          "release": "kube-prometheus-stack"
+        }
+      },
+      "spec": {
+        "groups": [
+          {
+            "name": "svcdesk_slo_alerts"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "monitoring.coreos.com/v1",
+      "kind": "ServiceMonitor",
+      "metadata": {
+        "name": "svcdesk",
+        "namespace": "monitoring",
+        "labels": {
+          "app": "svcdesk",
+          "release": "kube-prometheus-stack"
+        }
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "app": "svcdesk"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "metadata": {
+        "name": "prometheus-kube-prometheus-stack-prometheus-0",
+        "namespace": "monitoring",
+        "labels": {
+          "app.kubernetes.io/name": "prometheus"
+        }
+      },
+      "status": {
+        "phase": "Running"
+      }
+    }
+  ]
+}
